@@ -50,6 +50,16 @@ def make_blog_posts():
     
     posts.sort(key=lambda p: p["date"], reverse=True)
 
+def make_blog_index():
+    all_html = ""
+    for post in posts:
+        all_html += f'<h2><a href="/blog/{post["slug"]}/">{post["title"]}</a></h2><p>{post["date"]}</p>{post["html"]}'
+    blog_body = blog_temp.replace("{{ content }}", all_html)
+    blog_out = site_dir / "blog" 
+    blog_out.mkdir(parents=True, exist_ok=True)
+    (blog_out / "index.html").write_text(render(blog_body, "Blog"), encoding="utf-8")
+
+
 clear_directories()
 make_about()
 make_blog_posts()
