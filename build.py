@@ -59,7 +59,13 @@ def make_blog_index():
     blog_out.mkdir(parents=True, exist_ok=True)
     (blog_out / "index.html").write_text(render(blog_body, "Blog"), encoding="utf-8")
 
+def make_settings():
+    shutil.copytree(stat_dir, site_dir / "static")
+    shutil.copy(stat_dir / "CNAME", site_dir / "CNAME")
+    (site_dir / ".nojekyll").write_text("", encoding="utf-8")
 
 clear_directories()
 make_about()
 make_blog_posts()
+make_blog_index
+make_settings()
