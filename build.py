@@ -15,11 +15,20 @@ post_temp = (temp_dir / "post.html").read_text(encoding="utf-8")
 blog_temp = (temp_dir / "blog.html").read_text(encoding="utf-8")
 
 def render(body, title):
-    result = base_temp.replace("{{ title }}", title)
-    result = result.replace("{{ content }}", body)
+    result = base_temp.replace("{{ title }}", title).replace("{{ content }}", body)
     return result
 
 def convert(path):
     md = markdown.Markdown(extensions=["meta", "fenced_code", "tables"])
     html = md.convert(Path(path).read_text(encoding="utf-8"))
     return (html, md.Meta)
+
+if site_dire.exists():
+    shutil.rmtree(site_dir)
+site_dir.mkdir(parents=True, exists_ok=True)
+
+html, meta = convert(cont_dir / "about.md")
+body = page_temp.replace("{{ title }}"), meta["title"][0].replace("{{  content  }}", html)
+about_dir = site_dir / "about"
+about_dir.mkdir(parents=True, exists_ok=True)
+(about_dir / "index.html").write_text(render(body, meta["title"][0]), encoding="utf-8")
