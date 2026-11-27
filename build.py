@@ -18,3 +18,8 @@ def render(body, title):
     result = base_temp.replace("{{ title }}", title)
     result = result.replace("{{ content }}", body)
     return result
+
+def convert(path):
+    md = markdown.Markdown(extensions=["meta", "fenced_code", "tables"])
+    html = md.convert(Path(path).read_text(encoding="utf-8"))
+    return (html, md.Meta)
