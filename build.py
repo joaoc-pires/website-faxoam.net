@@ -1,6 +1,5 @@
 import shutil
 from pathlib import Path
-import datetime
 import markdown
 
 cont_dir = Path("content")
@@ -24,15 +23,15 @@ def convert(path):
     return (html, md.Meta)
 
 def clear_directories():
-    if site_dire.exists():
+    if site_dir.exists():
         shutil.rmtree(site_dir)
-    site_dir.mkdir(parents=True, exists_ok=True)
+    site_dir.mkdir(parents=True, exist_ok=True)
 
 def make_about():
     html, meta = convert(cont_dir / "about.md")
-    body = page_temp.replace("{{ title }}"), meta["title"][0].replace("{{  content  }}", html)
+    body = page_temp.replace("{{ title }}", meta["title"][0]).replace("{{ content }}", html)
     about_dir = site_dir / "about"
-    about_dir.mkdir(parents=True, exists_ok=True)
+    about_dir.mkdir(parents=True, exist_ok=True)
     (about_dir / "index.html").write_text(render(body, meta["title"][0]), encoding="utf-8")
 
 def make_blog_posts():
@@ -47,10 +46,9 @@ def make_blog_posts():
         post_dir.mkdir(parents=True, exist_ok=True)
         (post_dir / "index.html").write_text(render(body, title), encoding="utf-8")
         posts.append({"title": title, "date": date, "slug": slug, "html": html})
-    
-    posts.sort(key=lambda p: p["date"], reverse=True)
+    return posts
 
-def make_blog_index():
+def make_blog_index(posts):
     all_html = ""
     for post in posts:
         all_html += f'<h2><a href="/blog/{post["slug"]}/">{post["title"]}</a></h2><p>{post["date"]}</p>{post["html"]}'
@@ -66,6 +64,9 @@ def make_settings():
 
 clear_directories()
 make_about()
-make_blog_posts()
-make_blog_index
+
+posts = make_blog_posts()
+posts.sort(key=lambda p: p["date"], reverse=True)
+
+make_blog_index(posts)
 make_settings()
