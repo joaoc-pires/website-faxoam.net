@@ -1,7 +1,7 @@
-@fibt-face {
+@font-face {
     font-family: "JetBrains Mono";
     src: url("static/fonts/JetBrainsMono-Medium.woff2") format("woff2");
-    font-weight: 400;
+    font-weight: 500;
     font-display: swap;
 }
 :root { 
