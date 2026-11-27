@@ -1,0 +1,19 @@
+@fibt-face {
+    font-family: "JetBrains Mono";
+    src: url("static/fonts/JetBrainsMono-Medium.woff2") format("woff2");
+    font-weight: 400;
+    font-display: swap;
+}
+:root { 
+    --bg:#000; 
+    --fg: #efe5c0; 
+}
+body {
+    background: var(--bg);
+    color: var(--fg);
+    font-family: "JetBrains Mono", monospace;
+}
+a {
+    color: var(--fg);
+    text-decoration: underline;
+}
